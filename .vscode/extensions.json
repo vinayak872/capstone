@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "google.geminicodeassist",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-kubernetes-tools",
+    "redhat.vscode-yaml"
+  ]
+}

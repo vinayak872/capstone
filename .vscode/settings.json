@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.yaml": "yaml",
+    "Dockerfile": "dockerfile"
+  },
+  "editor.formatOnSave": true
+}
