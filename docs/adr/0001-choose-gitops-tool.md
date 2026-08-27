@@ -1,14 +1,18 @@
 # ADR 0001: Choice of GitOps Tool
 
 ## Status
-Proposed
+Accepted
 
 ## Context
 We need a tool to automatically sync our Kubernetes cluster with
 what's declared in Git. The two main options are ArgoCD and Flux.
 
 ## Decision
-(Fill in once you've tested both — this is a required deliverable.)
+We selected ArgoCD as our primary GitOps tool after comparing it with Flux (see Step 2
+below for full comparison). ArgoCD was chosen for its web UI, which made debugging sync
+issues significantly faster during development, and its simpler initial setup.
 
 ## Consequences
-(What this choice means for the rest of the project.)
+- Team needs to learn ArgoCD's Application CRD structure
+- Flux remains documented as a viable alternative with lower resource footprint
+- Future Argo Rollouts integration (Sem VIII) is native to ArgoCD's ecosystem
