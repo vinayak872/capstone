@@ -1,0 +1,4 @@
+date,event,commit_sha,duration_seconds,outcome
+2026-08-24,deploy,280289b,32,failure
+2026-08-25,deploy,4f557f7,67,success
+2026-08-25,deploy,e8f3c2a,194,success

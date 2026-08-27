@@ -1,0 +1,13 @@
+run_id,date,event,commit_sha,status,conclusion,duration_seconds
+33041599689,2026-08-27,push,4056982,completed,success,44
+33041184200,2026-08-27,push,262b462,completed,success,31
+33041069135,2026-08-27,push,45fab59,completed,success,31
+33040893798,2026-08-27,push,6fc410d,completed,success,50
+33040890609,2026-08-27,push,06dd7dc,completed,success,40
+32824935161,2026-08-25,push,db600f9,completed,success,53
+32821924763,2026-08-25,push,81d0ba7,completed,success,54
+32821917876,2026-08-25,push,510e648,completed,success,34
+32821772103,2026-08-25,push,bdfedcc,completed,success,46
+32813150861,2026-08-25,push,e144165,completed,success,49
+32811264670,2026-08-25,push,4f557f7,completed,success,67
+32658536534,2026-08-23,push,280289b,completed,failure,32
