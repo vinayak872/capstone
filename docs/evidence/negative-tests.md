@@ -12,7 +12,7 @@ This document records the empirical results of the **5 mandatory resilience & fa
 | **NT-02** | **Canary Metric Failure Threshold Breach** | Argo Rollouts + Prometheus | *Planned for Sem VIII* | Scheduled for Argo Rollouts evaluation | N/A |
 | **NT-03** | **Rollback Correctness & Clean State Restoral** | Argo Rollouts Controller | *Planned for Sem VIII* | Scheduled for automated rollback evaluation | N/A |
 | **NT-04** | **Partial Failure & Pod Self-Healing** | Deployment ReplicaSet Controller & ArgoCD | **Executed** | ✅ **PASSED** (Replica count maintained, auto-healed in ~1s) | **~1s (create) / ~18s (ready)** |
-| **NT-05** | **Idempotent Retry & Duplicate Work Handling** | GitOps Reconciliation Loop | **Documented** | Ready for execution | Idempotent no-op |
+| **NT-05** | **Idempotent Retry & Duplicate Work Handling** | GitHub Actions CI & GitOps Reconciliation | **Executed** | ✅ **PASSED** (Concurrent runs succeeded; synced to final commit `96a18ab`) | **0s (idempotent no-op)** |
 
 ---
 
@@ -46,3 +46,21 @@ This document records the empirical results of the **5 mandatory resilience & fa
   - **ArgoCD Sync State:** Remained **`Synced`** continuously throughout recovery (desired declarative state in Git remained unchanged).
   - **ArgoCD Health State:** Transitioned smoothly from `Healthy` → `Progressing` (during readiness probe grace period) → `Healthy` (at 18s when `/health` readiness check passed).
 - **Conclusion:** **PASSED**. The Kubernetes control plane self-healed the missing pod immediately, and ArgoCD correctly distinguished transient health degradation from declarative Git drift.
+
+---
+
+### Test NT-05: Retry & Duplicate-Work Handling
+- **Objective:** Trigger multiple CI pipeline runs in rapid succession by pushing two empty commits back-to-back (`2cb08cc` and `96a18ab`), verifying that concurrent builds do not conflict in CI/GHCR and that the GitOps engine idempotently converges on the final desired state.
+- **Execution Commands:**
+  ```bash
+  git commit --allow-empty -m "test: retry handling 1" && git push origin main
+  git commit --allow-empty -m "test: retry handling 2" && git push origin main
+  ```
+- **Observed Metrics:**
+  - **CI Pipeline Run 1 (`33042084960`, commit `2cb08cc`):** Completed with **`success`**.
+  - **CI Pipeline Run 2 (`33042086789`, commit `96a18ab`):** Completed with **`success`**.
+  - **Race Condition / Build Conflicts:** None. Docker builds and Trivy scans executed safely in isolated ephemeral runners.
+  - **ArgoCD Final State:** **`Synced`** and **`Healthy`**.
+  - **Flux Final State:** **`Ready: True`** (Applied revision `main@sha1:96a18abe`).
+  - **Live Pods Status:** 3/3 pods remained in `Running` state without disruption.
+- **Conclusion:** **PASSED**. Both the CI pipeline and GitOps reconciliation loop exhibited complete idempotency under rapid, concurrent push triggers.
